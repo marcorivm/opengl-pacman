@@ -7,9 +7,17 @@ Wallmanager::Wallmanager(void)
 	y = 0;
 	z = 0;
 	material = 3;
-	list_ptr = glGenLists(1);
+	list_ptr = glGenLists(10);
 	glNewList(list_ptr, GL_COMPILE);
     glPushMatrix(); //dibuja el tope
+		glutSolidCube(1);
+    glPopMatrix();
+	glEndList();
+
+	
+	glNewList(list_ptr+9, GL_COMPILE);
+    glPushMatrix(); //dibuja el tope
+		glScalef(1,0.3,1);
 		glutSolidCube(1);
     glPopMatrix();
 	glEndList();
@@ -18,4 +26,20 @@ Wallmanager::Wallmanager(void)
 
 Wallmanager::~Wallmanager(void)
 {
+}
+
+void Wallmanager::draw(int wall)
+{
+	glPushMatrix();
+	setMaterial(this->material);
+	switch (wall)
+	{
+	case '-':
+		glCallList(list_ptr+9);
+		break;
+	default:
+		glCallList(list_ptr);
+		break;
+	}
+	glPopMatrix();
 }

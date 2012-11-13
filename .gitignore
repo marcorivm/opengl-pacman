@@ -14,3 +14,6 @@
 # Visual Studio files
 *.vcxproj
 *.vcxproj.filters
+
+# Debug folder
+Debug

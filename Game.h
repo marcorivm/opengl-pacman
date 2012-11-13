@@ -12,7 +12,10 @@ class Game
 public:
 	Game(void);
 	~Game(void);
+	void draw(void);
+	void update(void);
 private:
+	void initGameboard(void);
 	Chaser* chaser;
 	Ambusher* ambusher;
 	Fickle* fickle;
@@ -21,5 +24,7 @@ private:
 	Powerup* powerup;
 	Dot* dot;
 	Wallmanager* wallmanager;
+	const static char initial_gameboard[31][28];
+	char gameboard[31][28];
 };
 

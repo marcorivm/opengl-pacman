@@ -3,6 +3,7 @@
 
 Chaser::Chaser(void)
 {
+	material = 4;
 }
 
 

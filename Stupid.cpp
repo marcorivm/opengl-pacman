@@ -3,6 +3,7 @@
 
 Stupid::Stupid(void)
 {
+	material = 19;
 }
 
 

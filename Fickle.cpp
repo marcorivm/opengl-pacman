@@ -3,6 +3,7 @@
 
 Fickle::Fickle(void)
 {
+	material = 5;
 }
 
 

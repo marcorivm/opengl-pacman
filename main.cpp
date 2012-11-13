@@ -1,5 +1,6 @@
 #include "glut_headers.h"
 #include <iostream>
+#include "Game.h"
 
 float mat_ambient_diffuse [] = {0.0,0.0,0.0,1.0};
 float mat_specular [] = {0.0,0.0,0.0,1.0};
@@ -15,6 +16,7 @@ float spot_exponent = 5.0;
 int rot_x[2] = {300,1.0}; //rot_x
 int rot_y[2] = {0,0}; //rot_y
 int rot_z[2] = {0,0}; //rot_z
+Game* game;
 
 void init()
 {
@@ -31,13 +33,13 @@ void init()
 }
 void initObjects()
 {
-	
+	game = new Game();
 }
 
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+	game->draw();
     glutSwapBuffers();
 }
 
@@ -47,11 +49,10 @@ void reshape(int x, int y)
     glViewport(0, 0, x, y);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60.0,1.0,1.0,100.0);
+    glOrtho(-1.5,28.5, 31.5, -1.5, -512, 512);
+
     glMatrixMode(GL_MODELVIEW);
-    //gluLookAt(0,0,10,0,0,0,0,1,0);
-	//gluLookAt(0,5,3,0,0,0,0,8,0);
-	gluLookAt(5,5,10,0,0,0,0,1,0);
+    glLoadIdentity() ;
 
 }
 
@@ -71,6 +72,7 @@ static void idle(void)
 
 void myTimer(int valor)
 {
+	game->update();
     glutPostRedisplay();
     glutTimerFunc(350,myTimer,valor);
 
@@ -82,7 +84,7 @@ void myTimer(int valor)
 int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
-    glutInitWindowSize(1000,1000);
+    glutInitWindowSize(1000,1000);	
     glutInitWindowPosition(100,50);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow("Pacman");

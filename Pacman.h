@@ -6,5 +6,10 @@ class Pacman :
 public:
 	Pacman(void);
 	~Pacman(void);
+	virtual void draw(void);
+	void update(void);
+private:
+	int ang;
+	int inc_ang;
 };
 

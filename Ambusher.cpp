@@ -3,6 +3,7 @@
 
 Ambusher::Ambusher(void)
 {
+	material = 6;
 }
 
 
