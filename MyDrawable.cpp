@@ -80,6 +80,7 @@ void MyDrawable::draw(void)
 {
 	glPushMatrix();
 		setMaterial(this->material);
+		glTranslatef(x, y, 0);
 		glCallList(list_ptr);
 	glPopMatrix();
 }
@@ -92,4 +93,10 @@ void MyDrawable::setMaterial (int k)
     glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse[k]);
     glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular[k]);
     glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess[k]);
+}
+
+void MyDrawable::setPoint(int x, int y)
+{
+	this->x = x;
+	this->y = y;
 }

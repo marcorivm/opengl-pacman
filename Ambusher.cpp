@@ -1,9 +1,13 @@
 #include "Ambusher.h"
 
+const int Ambusher::mat = 6; 
 
 Ambusher::Ambusher(void)
 {
-	material = 6;
+	my_material = mat;
+	material = mat;
+	move_prob = 9;
+	change_prob = 1;
 }
 
 

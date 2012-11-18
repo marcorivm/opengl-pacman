@@ -6,10 +6,24 @@ class Pacman :
 public:
 	Pacman(void);
 	~Pacman(void);
+	void keyListener(int key, int x, int y);
 	virtual void draw(void);
-	void update(void);
+	int update(char gameboard[][28]);
+	int getX(void);
+	int getY(void);
+	void die(void);
+	boolean isDead(void);
 private:
+	int lives;
 	int ang;
 	int inc_ang;
+	int dir;
+	float step;
+	void wrap(void);
+	int getNextX(void);
+	int getNextY(void);
+	void incrementX(void);
+	void incrementY(void);
+	void animate(int val);
 };
 

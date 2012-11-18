@@ -6,5 +6,7 @@ class Fickle :
 public:
 	Fickle(void);
 	~Fickle(void);
+	const static int mat;
+	int dir;
 };
 

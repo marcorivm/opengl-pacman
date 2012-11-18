@@ -16,7 +16,7 @@ const char Game::initial_gameboard[31][28] = {{'1','2','2','2','2','2','2','2','
 											{'0','0','0','0','0','4','d','8','4','0','0','0','0','0','0','0','0','0','0','4','8','d','8','0','0','0','0','0'},
 											{'0','0','0','0','0','4','d','8','4','0','1','2','2','-','-','2','2','3','0','4','8','d','8','0','0','0','0','0'},
 											{'6','6','6','6','6','5','d','7','5','0','8','0','0','0','0','0','0','4','0','5','7','d','7','6','6','6','6','6'},
-											{'9','0','0','0','0','0','d','0','0','0','8','0','a','c','f','s','0','4','0','0','0','d','0','0','0','0','0','9'},
+											{'9','0','0','0','0','0','d','0','0','0','8','0','0','0','0','0','0','4','0','0','0','d','0','0','0','0','0','9'},
 											{'2','2','2','2','2','3','d','1','3','0','8','0','0','0','0','0','0','4','0','1','3','d','1','2','2','2','2','2'},
 											{'0','0','0','0','0','4','d','8','4','0','7','6','6','6','6','6','6','5','0','8','4','d','8','0','0','0','0','0'},
 											{'0','0','0','0','0','4','d','8','4','0','0','0','0','0','0','0','0','0','0','8','4','d','8','0','0','0','0','0'},
@@ -25,7 +25,7 @@ const char Game::initial_gameboard[31][28] = {{'1','2','2','2','2','2','2','2','
 											{'8','d','d','d','d','d','d','d','d','d','d','d','d','8','4','d','d','d','d','d','d','d','d','d','d','d','d','4'},
 											{'8','d','1','2','2','3','d','1','2','2','2','3','d','8','4','d','1','2','2','2','3','d','1','2','2','3','d','4'},
 											{'8','d','7','6','3','4','d','7','6','6','6','5','d','7','5','d','7','6','6','6','5','d','8','1','6','5','d','4'},
-											{'8','u','d','d','8','4','d','d','d','d','d','d','d','p','0','d','d','d','d','d','d','d','8','4','d','d','u','4'},
+											{'8','u','d','d','8','4','d','d','d','d','d','d','d','0','0','d','d','d','d','d','d','d','8','4','d','d','u','4'},
 											{'7','2','3','d','8','4','d','1','3','d','1','2','2','2','2','2','2','3','d','1','3','d','8','4','d','1','6','5'},
 											{'1','6','5','d','7','5','d','8','4','d','7','6','6','3','1','6','6','5','d','8','4','d','7','5','d','7','2','3'},
 											{'8','d','d','d','d','d','d','8','4','d','d','d','d','8','4','d','d','d','d','8','4','d','d','d','d','d','d','4'},
@@ -36,7 +36,6 @@ const char Game::initial_gameboard[31][28] = {{'1','2','2','2','2','2','2','2','
 
 Game::Game(void)
 {
-	initGameboard();
 	wallmanager = new Wallmanager();
 	dot = new Dot();
 	powerup = new Powerup();
@@ -45,6 +44,11 @@ Game::Game(void)
 	chaser = new Chaser();
 	fickle = new Fickle();
 	stupid = new Stupid();
+	speed = 200;
+	level = 1;
+	score = 0;
+	paused = false;
+	newLevel();
 }
 
 
@@ -69,44 +73,118 @@ void Game::draw(void)
 				case 'u':
 					powerup->draw();
 					break;
-				case 'p':
-					pacman->draw();
-					break;
-				case 'a':
-					ambusher->draw();
-					break;
-				case 'c':
-					chaser->draw();
-					break;
-				case 'f':
-					fickle->draw();
-					break;
-				case 's':
-					stupid->draw();
-					break;
 				case '0':
 				case '9':
 					 break;
 				default:
 					wallmanager->draw(gameboard[i][j]);
 					break;
-				}	
+				}
 			glPopMatrix();
 		}
-		std::cout << "\n";
+	}
+	pacman->draw();
+	ambusher->draw();
+	chaser->draw();
+	fickle->draw();
+	stupid->draw();
+}
+void Game::superPacman(void)
+{
+	switch (level)
+	{
+		case 4:
+			ambusher->makeMortal();
+		case 3:
+			chaser->makeMortal();
+		case 2:
+			fickle->makeMortal();
+		case 1:
+			stupid->makeMortal();
 	}
 }
 void Game::update(void)
 {
-	pacman->update();
+	if(dots > 0) {
+		pacman->update(gameboard);
+		int x = pacman->getX();
+		int y = pacman->getY();
+		switch (gameboard[y][x]) {
+			case 'u':
+				superPacman();
+				score++;
+			case 'd':
+				score++;
+				dots--;
+				gameboard[y][x] = '0';
+				break;
+		}
+		boolean hit = false;
+		switch (level)
+		{
+			case 4:
+				hit = ambusher->update(x, y, gameboard) || hit;
+			case 3:
+				hit = chaser->update(x, y, gameboard) || hit;
+			case 2:
+				hit = fickle->update(x, y, gameboard) || hit;
+			case 1:
+				hit = stupid->update(x, y, gameboard) || hit;
+		}
+		if(hit) {
+			score -= 30;
+			pacman->die();
+		}
+	} else {
+		levelUp();
+	}
 }
+void Game::levelUp(void) 
+{
+	level++;
+	speed -= 20;
+	newLevel();
+}
+void Game::newLevel(void)
+{
+	pacman->setPoint(13,23);
+	ambusher->die();
+	chaser->die();
+	fickle->die();
+	stupid->die();
+	ambusher->setPoint(12,14);
+	chaser->setPoint(13,14);
+	fickle->setPoint(14,14);
+	stupid->setPoint(15,14);
+	dots = 0;
+	initGameboard();
+}
+boolean Game::isPlaying(void) {
+	return !paused;
+}
+
+boolean Game::hasEnded(void) {
+	return pacman->isDead();
+}
+
 void Game::initGameboard(void)
 {
 	for (int i = 0; i < 31; i++)
 	{
 		for (int j = 0; j < 28; j++)
 		{
+			if(this->initial_gameboard[i][j] == 'd' || this->initial_gameboard[i][j] == 'u'){
+				dots++;
+			}
 			gameboard[i][j] = this->initial_gameboard[i][j];
 		}
 	}
+}
+
+void Game::keyListener(int key, int x, int y)
+{
+	if(key == 1112) {
+		paused = !paused;
+	}
+	pacman->keyListener(key, x, y);
 }

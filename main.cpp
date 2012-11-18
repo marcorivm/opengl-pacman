@@ -39,7 +39,11 @@ void initObjects()
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	game->draw();
+	if(game->isPlaying()) {
+		game->draw();
+	} else if(game->hasEnded()) {
+		// Gameover;
+	}
     glutSwapBuffers();
 }
 
@@ -57,6 +61,7 @@ void reshape(int x, int y)
 }
 
 void special(int key, int x, int y){
+	game->keyListener(key, x, y);
     glutPostRedisplay();
 }
 void key(unsigned char key, int x, int y)
@@ -67,16 +72,19 @@ void key(unsigned char key, int x, int y)
 }
 static void idle(void)
 {
-    // Let's not be idle
+    glutPostRedisplay();
 }
 
 void myTimer(int valor)
 {
-	game->update();
+	if(game->isPlaying()) {
+		game->update();
+		valor = game->speed;
+	} else if(game->hasEnded()) {
+		// Gameover
+	}
     glutPostRedisplay();
-    glutTimerFunc(350,myTimer,valor);
-
-
+    glutTimerFunc(valor,myTimer,valor);
 }
 
 
@@ -95,11 +103,9 @@ int main(int argc, char *argv[])
     glutKeyboardFunc(key);
     glutSpecialFunc(special);
     glutIdleFunc(idle);
-    glutTimerFunc(350,myTimer,0);
-
-
-
-    glutMainLoop();
+    glutTimerFunc(350,myTimer,350);
+	
+	glutMainLoop();
 
     return EXIT_SUCCESS;
 }

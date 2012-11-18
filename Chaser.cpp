@@ -1,9 +1,13 @@
 #include "Chaser.h"
 
+const int Chaser::mat = 4; 
 
 Chaser::Chaser(void)
 {
-	material = 4;
+	my_material = mat;
+	material = mat;
+	move_prob = 10;
+	change_prob = 0;
 }
 
 

@@ -1,9 +1,11 @@
 #include "Stupid.h"
 
+const int Stupid::mat = 19; 
 
 Stupid::Stupid(void)
 {
-	material = 19;
+	my_material = mat;
+	material = mat;
 }
 
 

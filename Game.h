@@ -14,8 +14,20 @@ public:
 	~Game(void);
 	void draw(void);
 	void update(void);
-private:
+	void keyListener(int key, int x, int y);
+	int speed;
+	boolean isPlaying(void);
+	boolean hasEnded(void);
+private:	
+	boolean paused;
+	int level;
+	int dots;
+	void updatePacman(int x, int y);
 	void initGameboard(void);
+	void levelUp(void);
+	void newLevel(void);
+	void superPacman(void);
+	int score;
 	Chaser* chaser;
 	Ambusher* ambusher;
 	Fickle* fickle;
