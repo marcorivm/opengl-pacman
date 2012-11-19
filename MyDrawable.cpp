@@ -94,6 +94,16 @@ void MyDrawable::setMaterial (int k)
     glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular[k]);
     glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess[k]);
 }
+void MyDrawable::newMaterial (int k, float r, float g, float b)
+{
+    //Asigna los apropiados materiales a las superficies
+	GLfloat emission[4] = {r, g, b, 1.0};
+	glMaterialfv(GL_FRONT, GL_EMISSION, emission);
+    glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient[k]);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse[k]);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular[k]);
+    glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess[k]);
+}
 
 void MyDrawable::setPoint(int x, int y)
 {

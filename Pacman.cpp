@@ -11,7 +11,7 @@ Pacman::Pacman(void)
 	y = 0;
 	z = 0;
 	step = 1.00;
-	material = 23;
+	material = 6;
 	ang = 0;
 	inc_ang = -1;
 	list_ptr = glGenLists(1);
@@ -35,7 +35,7 @@ void Pacman::draw(void)
         inc_ang = inc_ang * -1;
     }
     ang += inc_ang;
-	glPushMatrix();
+	setMaterial(material);
 	glPushMatrix();
        glShadeModel (GL_SMOOTH);
 	   glTranslatef(x, y, 0);
@@ -50,8 +50,6 @@ void Pacman::draw(void)
         glRotatef(45-ang, 0.0, 0.0, 1.0);
         glCallList(list_ptr);
     glPopMatrix();
-
-	glPopMatrix();
 }
 
 int Pacman::update(char gameboard[][28])

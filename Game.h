@@ -7,6 +7,7 @@
 #include "Powerup.h"
 #include "Dot.h"
 #include "Wallmanager.h"
+#include "Text.h"
 class Game
 {
 public:
@@ -18,7 +19,12 @@ public:
 	int speed;
 	boolean isPlaying(void);
 	boolean hasEnded(void);
-private:	
+private:
+	void drawScore(void);
+	void drawLives(void);
+	void drawLevel(void);
+	void drawAuthor(void);
+	void initHeaders(void);
 	boolean paused;
 	int level;
 	int dots;
@@ -38,5 +44,9 @@ private:
 	Wallmanager* wallmanager;
 	const static char initial_gameboard[31][28];
 	char gameboard[31][28];
+	Text* score_header;
+	Text* lives_header;
+	Text* author_header;
+	Text* level_header;
 };
 

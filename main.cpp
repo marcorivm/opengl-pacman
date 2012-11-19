@@ -23,7 +23,7 @@ void init()
     glEnable(GL_DEPTH_TEST);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_FALSE);
     glEnable(GL_LIGHTING);
-	GLfloat globalAmbient[ ] = { 0.70, .70, .70, 0.0 };
+	GLfloat globalAmbient[ ] = { 1.00, 1.00, 1.00, 0.0 };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
     glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE, mat_ambient_diffuse);
     glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
@@ -77,7 +77,7 @@ static void idle(void)
 
 void myTimer(int valor)
 {
-	if(game->isPlaying()) {
+	if(game->isPlaying() && !game->hasEnded()) {
 		game->update();
 		valor = game->speed;
 	} else if(game->hasEnded()) {

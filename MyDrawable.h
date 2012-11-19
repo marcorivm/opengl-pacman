@@ -7,6 +7,7 @@ public:
 	~MyDrawable(void);
 	virtual void draw(void);
 	void setMaterial(int k);
+	static void newMaterial(int k, float r, float g, float b);
 	void setPoint(int x, int y);
 	const static GLfloat mat_ambient[][24];
 	const static GLfloat mat_diffuse[][4];

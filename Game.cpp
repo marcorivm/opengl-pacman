@@ -48,9 +48,17 @@ Game::Game(void)
 	level = 1;
 	score = 0;
 	paused = false;
+	initHeaders();
 	newLevel();
 }
 
+void Game::initHeaders(void)
+{
+	lives_header = new Text("Vidas:");
+	author_header = new Text("Marco Rivadeneyra Morales\na01099497");
+	level_header = new Text("Nivel:");
+	score_header = new Text("Puntuacion:");
+}
 
 Game::~Game(void)
 {
@@ -58,6 +66,14 @@ Game::~Game(void)
 
 void Game::draw(void)
 {
+	glViewport(0,0,700,1000);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(-1.5,28.5, 31.5, -1.5, -512, 512);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity() ;
+
 	for (int i = 0; i < 31; i++)
 	{
 		for (int j = 0; j < 28; j++)
@@ -88,6 +104,58 @@ void Game::draw(void)
 	chaser->draw();
 	fickle->draw();
 	stupid->draw();
+
+	glViewport(700,0, 300, 1000);	
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-150,150, 500, -500, -512, 512);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity() ;
+	
+	glPushMatrix();
+		glTranslatef(-50, -500, 0);
+		drawScore();
+		drawLives();
+		drawLevel();
+		drawAuthor();
+	glPopMatrix();
+}
+void Game::drawLevel()
+{
+	MyDrawable::newMaterial(1,0,1,0);
+	glTranslatef(0, 150, 0);
+	level_header->draw();
+	glPushMatrix();
+	glTranslatef(50, 30, 0);
+	Text::drawInt(level);
+	glPopMatrix();
+}
+void Game::drawLives()
+{
+	MyDrawable::newMaterial(1,1,1,0);
+	glTranslatef(0, 150, 0);
+	lives_header->draw();
+	glPushMatrix();
+	glTranslatef(50, 30, 0);
+	Text::drawInt(pacman->lives);
+	glPopMatrix();
+}
+void Game::drawScore()
+{
+	MyDrawable::newMaterial(1,1,0,0);
+	glTranslatef(0, 150, 0);
+	score_header->draw();
+	glPushMatrix();
+	glTranslatef(50, 30, 0);
+	Text::drawInt(score);
+	glPopMatrix();
+}
+void Game::drawAuthor()
+{
+	MyDrawable::newMaterial(1,1,1,1);
+	glTranslatef(-100, 150, 0);
+	author_header->draw();
 }
 void Game::superPacman(void)
 {

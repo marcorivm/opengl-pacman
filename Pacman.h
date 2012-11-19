@@ -13,8 +13,8 @@ public:
 	int getY(void);
 	void die(void);
 	boolean isDead(void);
-private:
 	int lives;
+private:
 	int ang;
 	int inc_ang;
 	int dir;
