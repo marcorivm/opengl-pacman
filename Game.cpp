@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <stdio.h>
 #include <iostream>
+#include <mmsystem.h>
 
 const char Game::initial_gameboard[31][28] = {{'1','2','2','2','2','2','2','2','2','2','2','2','2','3','1','2','2','2','2','2','2','2','2','2','2','2','2','3'},
 											{'8','d','d','d','d','d','d','d','d','d','d','d','d','4','8','d','d','d','d','d','d','d','d','d','d','d','d','4'},
@@ -51,7 +52,10 @@ Game::Game(void)
 	initHeaders();
 	newLevel();
 }
-
+void Game::playSound(void)
+{
+	PlaySound((LPCSTR) "pacman_chomp.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
 void Game::initHeaders(void)
 {
 	lives_header = new Text("Vidas:");
@@ -63,10 +67,14 @@ void Game::initHeaders(void)
 Game::~Game(void)
 {
 }
-
+void Game::setPoint(int x, int y)
+{
+	this->x = x;
+	this->y = y;
+}
 void Game::draw(void)
 {
-	glViewport(0,0,700,1000);
+	glViewport(x,y, width * 0.7, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-1.5,28.5, 31.5, -1.5, -512, 512);
@@ -105,7 +113,7 @@ void Game::draw(void)
 	fickle->draw();
 	stupid->draw();
 
-	glViewport(700,0, 300, 1000);	
+	glViewport(width * 0.7 + x, 0 + y, width * 0.3, height);	
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-150,150, 500, -500, -512, 512);
@@ -118,8 +126,11 @@ void Game::draw(void)
 		drawScore();
 		drawLives();
 		drawLevel();
-		drawAuthor();
+		//drawAuthor();
 	glPopMatrix();
+}
+void Game::setKeys(int l, int t, int r, int b) {
+	pacman->setKeys(l,t,r,b);
 }
 void Game::drawLevel()
 {
@@ -210,7 +221,12 @@ void Game::update(void)
 void Game::levelUp(void) 
 {
 	level++;
-	speed -= 20;
+	if(level % 5 == 0) {
+		pacman->lives++;
+	}
+	if(speed > 100) {
+		speed -= 20;
+	}
 	newLevel();
 }
 void Game::newLevel(void)
@@ -226,6 +242,10 @@ void Game::newLevel(void)
 	stupid->setPoint(15,14);
 	dots = 0;
 	initGameboard();
+}
+void Game::pause(void)
+{
+	paused = !paused;
 }
 boolean Game::isPlaying(void) {
 	return !paused;
@@ -255,4 +275,10 @@ void Game::keyListener(int key, int x, int y)
 		paused = !paused;
 	}
 	pacman->keyListener(key, x, y);
+}
+
+void Game::setDimensions(int x, int y)
+{
+	width = x;
+	height = y;
 }

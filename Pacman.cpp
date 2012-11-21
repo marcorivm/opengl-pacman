@@ -5,7 +5,7 @@
 
 Pacman::Pacman(void)
 {
-	lives = 3;
+	lives =  3;
 	dir = 0;
 	x = 0;
 	y = 0;
@@ -90,11 +90,21 @@ void Pacman::die(void)
 }
 boolean Pacman::isDead(void)
 {
-	return (lives < 0);
+	return lives <= 0;
 }
 void Pacman::wrap(void)
 {
 	setPoint(abs(x-27), y);
+}
+
+void Pacman::setMaterial (int k)
+{
+	GLfloat emission[4] = {0.8, 0.8, 0.0, 1.0};
+	glMaterialfv(GL_FRONT, GL_EMISSION, emission);
+    glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient[k]);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse[k]);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular[k]);
+    glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess[k]);
 }
 
 void Pacman::incrementX(void)
@@ -154,19 +164,20 @@ int Pacman::getNextX(void)
 
 void Pacman::keyListener(int key, int x, int y)
 {
-	switch (key)
-	{
-		case 100:
+	if(key == l){
 			dir = 0;
-			break;
-		case 101:
+	} else if (key == t) {
 			dir = 1;
-			break;
-		case 102:
+	} else if(key == r) {
 			dir = 2;
-			break;
-		case 103:
+	} else if(key == b) {
 			dir = 3;
-			break;
 	}
+}
+void Pacman::setKeys(int l, int t, int r, int b)
+{
+	this->l = l;
+	this->t = t;
+	this->r = r;
+	this->b = b;
 }

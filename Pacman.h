@@ -14,7 +14,12 @@ public:
 	void die(void);
 	boolean isDead(void);
 	int lives;
+	void setKeys(int l, int t, int r, int b);
 private:
+	int l;
+	int t;
+	int r;
+	int b;
 	int ang;
 	int inc_ang;
 	int dir;
@@ -25,5 +30,6 @@ private:
 	void incrementX(void);
 	void incrementY(void);
 	void animate(int val);
+	void setMaterial(int k);
 };
 
