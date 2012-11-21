@@ -96,7 +96,7 @@ void display(void)
 	if(start_screen) {
 		reshape(width, height);
 		inicio->draw();
-	} else if(game->isPlaying() && !game->hasEnded()) {
+	} else if((game->isPlaying() && game2->isPlaying) && (!game->hasEnded() || !game2->hasEnded())) {
 		glPushMatrix();
 			game->setPoint(0, 0);
 			game->draw();
@@ -105,10 +105,10 @@ void display(void)
 			game2->setPoint(width/2, 0);
 			game2->draw();
 		glPopMatrix();
-	} else if(!game->isPlaying()) {
+	} else if(!game->isPlaying() || game2->isPlaying()) {
 		reshape(width, height);
 		Text::drawText("Juego en pausa, presione \"p\" para resumir o \"r\" para reiniciar");
-	} else if(game->hasEnded()) {
+	} else if(game->hasEnded() && game2->hasEnded()) {
 		reshape(width, height);
 		glPushMatrix();
 		Text::drawText("Fin del juego, presione \"r\" para reiniciar");
