@@ -13,7 +13,11 @@ Pantalla::Pantalla(void)
 	glPushMatrix();
 		Text::drawText("Pacman!");
 		glTranslatef(0, 1, 0);
-		Text::drawText("Marco Rivadeneyra Morales\n A01099497");
+		Text::drawText("Marco Rivadeneyra Morales");
+		glTranslatef(0, 1, 0);
+		Text::drawText("A01099497");
+		glTranslatef(0, 1, 0);
+		Text::drawText("Presiona \"i\" para iniciar");
     glPopMatrix();
 	glEndList();
 

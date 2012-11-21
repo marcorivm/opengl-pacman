@@ -113,13 +113,15 @@ void display(void)
 		glPushMatrix();
 		Text::drawText("Fin del juego, presione \"r\" para reiniciar");
 		glTranslatef(0, 1, 0);
-		Text::drawText("Terminaste con una puntuacion de:");
-		glTranslatef(0, 1, 0);
-		Text::drawInt(game->score);
-		glTranslatef(0, 1, 0);
-		Text::drawText("Lograste alcanzar el nivel:");
-		glTranslatef(0, 1, 0);
-		Text::drawInt(game->level);
+		if(game->score > game2->score) {
+			Text::drawText("Gane el jugador 1 con puntuación de:");
+			glTranslatef(0, 1, 0);
+			Text::drawInt(game->score);
+		} else {
+			Text::drawText("Gane el jugador 2 con puntuación de:");
+			glTranslatef(0, 1, 0);
+			Text::drawInt(game2->score);		
+		}
 		glPopMatrix();
 	}
     glutSwapBuffers();
